@@ -9,14 +9,17 @@ import UIKit
 
 class MainViewController: UIViewController {
     
-    private let nextPageButton = UIButton(type: .system)
+    private let loginButton = UIButton(type: .system)
+    private let loginTextField = UITextField()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavBar()
         setButton()
+        setLoginTextField()
     }
     
+    // MARK: - Set
     private func setNavBar() {
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "UITest Practice"
@@ -24,24 +27,45 @@ class MainViewController: UIViewController {
     }
     
     private func setButton() {
-        nextPageButton.setTitle("Next Page", for: .normal)
-        nextPageButton.setTitleColor(.white, for: .normal)
-        nextPageButton.backgroundColor = .systemPurple
-        nextPageButton.layer.cornerRadius = 15
-        nextPageButton.addTarget(self, action: #selector(didTapNextPage(_:)), for: .touchUpInside)
-        
-        view.addSubview(nextPageButton)
-        let constraints = [nextPageButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
-                           nextPageButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-                           nextPageButton.heightAnchor.constraint(equalToConstant: 50),
-                           nextPageButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30)]
-        nextPageButton.activateConstraints(constraints)
+        loginButton.setTitle("Login", for: .normal)
+        loginButton.setTitleColor(.white, for: .normal)
+        loginButton.backgroundColor = .systemPurple
+        loginButton.layer.cornerRadius = 15
+        loginButton.addTarget(self, action: #selector(didTapLoginButton(_:)), for: .touchUpInside)
+        loginButton.isEnabled = false
+        loginButton.setTitleColor(.gray, for: .disabled)
+        view.addSubview(loginButton)
+        let constraints = [loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+                           loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+                           loginButton.heightAnchor.constraint(equalToConstant: 50),
+                           loginButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30)]
+        loginButton.activateConstraints(constraints)
     }
     
-    @objc private func didTapNextPage(_ sender: UIButton) {
+    private func setLoginTextField() {
+        loginTextField.layer.cornerRadius = 15
+        loginTextField.addTarget(self, action: #selector(textChanged(_:)), for: .editingChanged)
+        loginTextField.placeholder = "username"
+        loginTextField.layer.borderWidth = 1
+        loginTextField.layer.borderColor = UIColor.black.cgColor
+        view.addSubview(loginTextField)
+        let constraints = [loginTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+                           loginTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
+                           loginTextField.heightAnchor.constraint(equalToConstant: 50),
+                           loginTextField.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor)]
+        loginTextField.activateConstraints(constraints)
+        
+    }
+    
+    // MARK: - #selectors
+    @objc private func didTapLoginButton(_ sender: UIButton) {
         let viewController = SecondViewController()
         navigationController?.pushViewController(viewController, animated: true)
     }
-
+    
+    @objc private func textChanged(_ sender: UITextField) {
+        guard let text = sender.text else { return }
+        loginButton.isEnabled = !text.isEmpty
+    }
 }
 
