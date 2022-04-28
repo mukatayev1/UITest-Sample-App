@@ -15,6 +15,7 @@ class SecondViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.accessibilityIdentifier = "SecondPageIdentifier"
         view.backgroundColor = .secondarySystemBackground
         title = "Second page"
         setLabel()

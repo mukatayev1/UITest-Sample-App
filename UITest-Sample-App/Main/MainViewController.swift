@@ -19,6 +19,11 @@ class MainViewController: UIViewController {
         setLoginTextField()
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        loginTextField.resignFirstResponder()
+    }
+    
     // MARK: - Set
     private func setNavBar() {
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -43,6 +48,8 @@ class MainViewController: UIViewController {
     }
     
     private func setLoginTextField() {
+        loginTextField.isAccessibilityElement = true
+        loginTextField.accessibilityIdentifier = "loginTextField"
         loginTextField.layer.cornerRadius = 15
         loginTextField.addTarget(self, action: #selector(textChanged(_:)), for: .editingChanged)
         loginTextField.placeholder = "username"
