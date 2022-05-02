@@ -7,53 +7,82 @@
 
 import XCTest
 
-class UITest_Sample_AppUITests: XCTestCase {
+// MARK: Format and naming
+//func test_SystemUnderTest_ConditionOrChangeState_ExpectedResult() {
+    //arrange (prepare): values needed are created.
+    //act (execute): execute the code being tested
+    //assert (check result): assert the result you expect with a message
+//}
+
+class drdiary_iosUITests: XCTestCase {
     
-    let app = XCUIApplication()
+    var app: XCUIApplication!
 
     override func setUpWithError() throws {
+        print("DEBUGGG: setUpWithError")
         continueAfterFailure = false
+        app = XCUIApplication()
+        app.launchEnvironment = ["animations": "0"]
         app.launch()
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        print("DEBUGGG: tearDownWithError")
     }
+    
+//    func test_Login_Status() {
+//        //arrange
+//        let startButton = app.buttons["시작하기"]
+//        let otherButton = app.buttons["다른 방법으로 시작하기"]
+//        let alreadyHaveEmail = app.buttons["이미 이메일로 가입하셨나요?"]
+//
+//        //act
+//        guard !startButton.exists else { throw XCTSkip("User already logged in") }
+//        startButton.tap()
+//        otherButton.tap()
+//        alreadyHaveEmail.tap()
+//    }
+    
+    func testC() {
+        print("DEBUGGG: testC")
+    }
+    
+    func testA() {
+        print("DEBUGGG: testA")
+    }
+    
+    func testB() {
+        print("DEBUGGG: testB")
+    }
+    
+    // MARK: - Private
+    
+//    func testopenLoginScreen() throws {
 
-    func testInitialState()  {
-        let textField = app.textFields["loginTextField"]
-        let loginButton = app.buttons["Login"]
-        
-        waitUntilElementAppear(element: textField)
-        waitUntilElementAppear(element: loginButton)
-        
-        XCTAssertTrue(textField.exists)
-        XCTAssertTrue(loginButton.exists)
-    }
+//    }
     
-    func testTypeLoginText() {
-        let username = "Aidos"
-        let textField = app.textFields["loginTextField"]
-        waitUntilElementAppear(element: textField)
-        textField.tap()
-        textField.typeText(username)
-        let textFieldText = textField.value as? String
-        app.tap()
-        XCTAssertEqual(textFieldText, username)
-    }
-    
-    func testLoginButtonEnabledAndTapIfEnabled() {
-        let loginButton = app.buttons["Login"]
-        waitUntilElementAppear(element: loginButton)
-        loginButton.tap()
+//    private func logoutTestUser() {
+//    }
+}
+
+// MARK: - Wait for existence
+extension XCUIElement {
+
+    @discardableResult
+    func waitForExistence() -> Bool {
+        self.waitForExistence(timeout: 10)
     }
 }
 
-extension UITest_Sample_AppUITests {
-    func waitUntilElementAppear(element: XCUIElement, timeout: TimeInterval = 5) {
-        let existsPredicate = NSPredicate(format: "exists == true")
-        expectation(for: existsPredicate, evaluatedWith: element, handler: nil)
-        waitForExpectations(timeout: timeout, handler: nil)
+// MARK: - Wait for existence + Tap
+extension XCUIElement {
+
+    func waitForExistenceThenTapOrFail(_ message: String? = nil, file: String = #file, line: Int = #line) {
+        if self.waitForExistence() {
+            self.tap()
+        } else {
+            let message = message ?? self.title
+            XCTFail("\(file) \(line) \(message)")
+        }
     }
 }
-
